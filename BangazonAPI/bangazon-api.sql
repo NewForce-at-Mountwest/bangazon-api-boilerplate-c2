@@ -43,7 +43,8 @@ DROP TABLE IF EXISTS Customer;
 CREATE TABLE Department (
 	Id INTEGER NOT NULL PRIMARY KEY IDENTITY,
 	[Name] VARCHAR(55) NOT NULL,
-	Budget 	INTEGER NOT NULL
+	Budget 	INTEGER NOT NULL,
+	Archived BIT NOT NULL DEFAULT(0)
 );
 
 CREATE TABLE Employee (
@@ -52,6 +53,7 @@ CREATE TABLE Employee (
 	LastName VARCHAR(55) NOT NULL,
 	DepartmentId INTEGER NOT NULL,
 	IsSuperVisor BIT NOT NULL DEFAULT(0),
+	Archived BIT NOT NULL DEFAULT(0),
     CONSTRAINT FK_EmployeeDepartment FOREIGN KEY(DepartmentId) REFERENCES Department(Id)
 );
 
@@ -60,7 +62,8 @@ CREATE TABLE Computer (
 	PurchaseDate DATETIME NOT NULL,
 	DecomissionDate DATETIME,
 	Make VARCHAR(55) NOT NULL,
-	Manufacturer VARCHAR(55) NOT NULL
+	Manufacturer VARCHAR(55) NOT NULL,
+	Archived BIT NOT NULL DEFAULT(0)
 );
 
 CREATE TABLE ComputerEmployee (
@@ -79,7 +82,8 @@ CREATE TABLE TrainingProgram (
 	[Name] VARCHAR(255) NOT NULL,
 	StartDate DATETIME NOT NULL,
 	EndDate DATETIME NOT NULL,
-	MaxAttendees INTEGER NOT NULL
+	MaxAttendees INTEGER NOT NULL,
+	Archived BIT NOT NULL DEFAULT(0)
 );
 
 CREATE TABLE EmployeeTraining (
@@ -92,13 +96,15 @@ CREATE TABLE EmployeeTraining (
 
 CREATE TABLE ProductType (
 	Id INTEGER NOT NULL PRIMARY KEY IDENTITY,
-	[Name] VARCHAR(55) NOT NULL
+	[Name] VARCHAR(55) NOT NULL,
+	Archived BIT NOT NULL DEFAULT(0)
 );
 
 CREATE TABLE Customer (
 	Id INTEGER NOT NULL PRIMARY KEY IDENTITY,
 	FirstName VARCHAR(55) NOT NULL,
-	LastName VARCHAR(55) NOT NULL
+	LastName VARCHAR(55) NOT NULL,
+	Archived BIT NOT NULL DEFAULT(0)
 );
 
 CREATE TABLE Product (
@@ -109,6 +115,7 @@ CREATE TABLE Product (
 	Title VARCHAR(255) NOT NULL,
 	[Description] VARCHAR(255) NOT NULL,
 	Quantity INTEGER NOT NULL,
+	Archived BIT NOT NULL DEFAULT(0),
     CONSTRAINT FK_Product_ProductType FOREIGN KEY(ProductTypeId) REFERENCES ProductType(Id),
     CONSTRAINT FK_Product_Customer FOREIGN KEY(CustomerId) REFERENCES Customer(Id)
 );
@@ -119,6 +126,7 @@ CREATE TABLE PaymentType (
 	AcctNumber INTEGER NOT NULL,
 	[Name] VARCHAR(55) NOT NULL,
 	CustomerId INTEGER NOT NULL,
+	Archived BIT NOT NULL DEFAULT(0),
     CONSTRAINT FK_PaymentType_Customer FOREIGN KEY(CustomerId) REFERENCES Customer(Id)
 );
 
@@ -126,6 +134,7 @@ CREATE TABLE [Order] (
 	Id INTEGER NOT NULL PRIMARY KEY IDENTITY,
 	CustomerId INTEGER NOT NULL,
 	PaymentTypeId INTEGER,
+	Archived BIT NOT NULL DEFAULT(0),
     CONSTRAINT FK_Order_Customer FOREIGN KEY(CustomerId) REFERENCES Customer(Id),
     CONSTRAINT FK_Order_Payment FOREIGN KEY(PaymentTypeId) REFERENCES PaymentType(Id)
 );
